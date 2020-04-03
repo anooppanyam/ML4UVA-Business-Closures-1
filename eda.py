@@ -31,12 +31,15 @@ def plot_sentiment(df):
     
     cols = ['is_open', 'sent_1_score', 'sent_2_score'] #'WeightedSentiment']
     fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(12,8))
-    
     df[cols].groupby('is_open').mean()['sent_1_score'].plot(kind='bar', ax=ax[0])
     df[cols].groupby('is_open').mean()['sent_2_score'].plot(kind='bar', ax=ax[1])
-    #df[cols].groupby('is_open').mean()['sent_1_rate'].plot(king='bar', ax=ax[2])
     
-
+    titles = ['Mean Hu & Liu Lexicon Score', 'Mean WordNet Score']
+    for i in range(len(ax)):
+        ax[i].set(title=titles[i])
+    
+    
+    
 def plot_checkins(df):
     """
     Plot bar chart of total checkins grouped by open status
@@ -45,7 +48,7 @@ def plot_checkins(df):
     cols = ['is_open', 'checkins']
     fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(12,8))
     df[cols].groupby('is_open')['checkins'].mean().plot(kind='bar', ax=ax)
-    
+    ax.set(title='Total Checkins', ylabel='Mean Number of Checkins')
 
 def unique_word_ct_util(text):
     all_words, without_stop = tokenize(text)
@@ -60,6 +63,11 @@ def plot_punc(df):
     
     df[cols].groupby('is_open').mean()['q'].plot(kind='bar', ax=ax[0])
     df[cols].groupby('is_open').mean()['e'].plot(kind='bar', ax=ax[1])
+    
+    titles = ['Mean Number of Question Marks', 'Mean Number of Exclamaiton Marks']
+    for i in range(len(ax)):
+        ax[i].set(title=titles[i], ylabel='Mean Count')
+   
     
 
 def preprocess_rev(df):
@@ -76,13 +84,13 @@ def unique_ct(df):
 def open_distr(df):
     cols = ['is_open']
     plt.figure(figsize=(6,6))
-    sns.countplot(x='is_open', data=df[cols])
+    sns.countplot(x='is_open', data=df[cols]).set_title('Distribution of Open Status')
     plt.show()
 
 def star_distr(df):
     cols = ['stars']
     plt.figure(figsize=(6,6))
-    sns.countplot(x='stars', data=df[cols])
+    sns.countplot(x='stars', data=df[cols]).set_title('Distribution of Yelp Star Ratings')
 
 def cat_distr(df):
     df['categories'] = df['categories'].apply(lambda x : x if type(x) == str else "")   
@@ -94,8 +102,9 @@ def cat_distr(df):
     cats_df.reset_index(inplace=True)
     plt.figure(figsize=(12,10))
     f = sns.barplot( y= 'index',x = 'category' , data = cats_df.iloc[0:20])
+    f.set_title('Top 20 Business Categories')
     f.set_ylabel('Category')
-    f.set_xlabel('Number of businesses');
+    f.set_xlabel('Number of businesses')
 
 def name_cloud(df):
     cols = ['name']
@@ -106,7 +115,7 @@ def name_cloud(df):
                           height=1000
                          ).generate(str(df[cols]))
     plt.imshow(wordcloud)
-    plt.axis('off');
+    plt.axis('off')
     
     
 
