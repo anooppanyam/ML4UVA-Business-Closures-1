@@ -17,6 +17,7 @@ warnings.filterwarnings("ignore")
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
+import math
 
 sns.set_style('whitegrid')
 
@@ -55,7 +56,7 @@ def plot_punc(df):
     """ Plot bar chart of mean number of ? and ! grouped by open status """
     
     cols = ['is_open', 'q', 'e']
-    fig, ax = plt.subplot(nrows=1, ncols=2, figsize=(12,4))
+    fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(12,8))
     
     df[cols].groupby('is_open').mean()['q'].plot(kind='bar', ax=ax[0])
     df[cols].groupby('is_open').mean()['e'].plot(kind='bar', ax=ax[1])
@@ -84,6 +85,7 @@ def star_distr(df):
     sns.countplot(x='stars', data=df[cols])
 
 def cat_distr(df):
+    df['categories'] = df['categories'].apply(lambda x : x if type(x) == str else "")   
     business_cats=','.join(df['categories'])
     cats=pd.DataFrame(business_cats.split(','),columns=['category'])
     cats_ser = cats.category.value_counts()
@@ -110,14 +112,13 @@ def name_cloud(df):
 
 def show_all(df):
      open_distr(df)
-     plt.show()
      star_distr(df)
      cat_distr(df)
      name_cloud(df)
      plot_sentiment(df)
      plot_checkins(df)
      plot_punc(df)
-     unique_ct(df)
+     #unique_ct(df)
      plt.show()
 
     
