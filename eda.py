@@ -121,11 +121,17 @@ def name_cloud(df):
 
 def show_all(df):
      open_distr(df)
+     print('\n')
      star_distr(df)
+     print('\n')
      cat_distr(df)
+     print('\n')
      name_cloud(df)
+     print('\n')
      plot_sentiment(df)
+     print('\n')
      plot_checkins(df)
+     print('\n')
      plot_punc(df)
      #unique_ct(df)
      plt.show()
